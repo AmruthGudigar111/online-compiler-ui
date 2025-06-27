@@ -14,7 +14,7 @@ This project provides an online compiler supporting Python and C with a web-base
 
 ### Frontend
 
-1. Open `frontend/index.html` in your browser.
+1. Open `index.html` in your browser.
 2. Or deploy it via GitHub Pages.
 
 ### Backend
@@ -22,13 +22,13 @@ This project provides an online compiler supporting Python and C with a web-base
 1. Install dependencies:
 
 ```bash
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 ```
 
 2. Run Flask server:
 
 ```bash
-python backend/app.py
+python app.py
 ```
 
 ### Deployment
