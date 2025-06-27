@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Python & C Compiler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .output {
+      background-color: #f7f7f7;
+      border-left: 5px solid #007BFF;
+      padding: 10px;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 15px;
+    }
+
+    body.dark {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark .container {
+      background-color: #2c2c2c;
+      box-shadow: none;
+    }
+
+    body.dark textarea,
+    body.dark select {
+      background-color: #333;
+      color: #f0f0f0;
+      border-color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Online Compiler (Python & C)</h2>
+    <button onclick="toggleTheme()" style="margin-bottom: 20px;">Toggle Theme 🌗</button>
+
+    <label for="language">Select Language:</label>
+    <select id="language">
+      <option value="python">Python</option>
+      <option value="c">C</option>
+    </select>
+
+    <label for="code">Write Your Code:</label>
+    <textarea id="code" rows="10" placeholder="Example for Python:\nname = input('Enter your name: ')\nprint('Hello,', name)"></textarea>
+
+    <label for="input">Input Arguments:</label>
+    <textarea id="input" rows="4" placeholder="Provide input here, e.g.\nJohn Doe"></textarea>
+    <div class="note">Example: If your code uses <code>input()</code>, enter input values here — each line as separate input.</div>
+
+    <button onclick="runCode()">Run Code</button>
+
+    <label for="output">Result:</label>
+    <pre id="output" class="output">Output will be shown here...</pre>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+      }
+
+      const savedCode = localStorage.getItem("lastCode");
+      const savedLang = localStorage.getItem("lastLang");
+      const savedInput = localStorage.getItem("lastInput");
+
+      if (savedCode) document.getElementById("code").value = savedCode;
+      if (savedLang) document.getElementById("language").value = savedLang;
+      if (savedInput) document.getElementById("input").value = savedInput;
+    };
+
+    async function runCode() {
+      const language = document.getElementById("language").value;
+      const code = document.getElementById("code").value;
+      const input = document.getElementById("input").value;
+      const output = document.getElementById("output");
+
+      localStorage.setItem("lastCode", code);
+      localStorage.setItem("lastLang", language);
+      localStorage.setItem("lastInput", input);
+
+      output.textContent = "⏳ Running your code...";
+
+      try {
+        const response = await axios.post("http://localhost:5000/run", {
+          language: language,
+          code: code,
+          input: input
+        });
+
+        output.textContent = response.data.output;
+      } catch (err) {
+        output.textContent = "❌ Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
