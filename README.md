@@ -22,13 +22,13 @@ This project provides an online compiler supporting Python and C with a web-base
 1. Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 2. Run Flask server:
 
 ```bash
-python app.py
+python backend/app.py
 ```
 
 ### Deployment
