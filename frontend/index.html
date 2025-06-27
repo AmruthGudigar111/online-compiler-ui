@@ -143,7 +143,7 @@
       output.textContent = "⏳ Running your code...";
 
       try {
-        const response = await axios.post("http://localhost:5000/run", {
+        const response = await axios.post("https://online-compiler-ui.onrender.com/run", {
           language: language,
           code: code,
           input: input
